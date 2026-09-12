@@ -1,6 +1,6 @@
 ---
 name: start-work
-description: Begin a new work item end-to-end — fetch the GitHub issue, surface relevant roadmap and PRD context, orient to the affected code, propose an implementation approach for confirmation, then pull main and create a feature branch. Use at the start of any session where a commit or PR will result. Invoke as /start-work #187 or /start-work with a task description.
+description: Begin a new work item end-to-end - fetch the GitHub issue, surface relevant roadmap and PRD context, orient to the affected code, propose an implementation approach for confirmation, then pull main and create a feature branch. Use at the start of any session where a commit or PR will result. Invoke as /start-work #187 or /start-work with a task description.
 ---
 
 Run this before writing any code or making any commits. Never commit directly to main.
@@ -36,23 +36,23 @@ Report what you found: "This is a Phase X item. The roadmap says [X]. The PRD sa
 
 ## 3. Orient to the affected code
 
-Based on the issue title, labels, and AC, identify the likely affected areas. Use targeted searches — don't read everything:
+Based on the issue title, labels, and AC, identify the likely affected areas. Use targeted searches - don't read everything:
 
 ```bash
 # Find relevant types and components
 grep -rn "<key type or feature name>" src/ --include="*.ts" --include="*.tsx" -l
 ```
 
-Read the 2–3 most directly relevant files to understand current shape. Note:
+Read the 2-3 most directly relevant files to understand current shape. Note:
 - What exists that this work builds on
 - Any patterns to follow (look at similar already-done work)
 - Any gotchas or constraints visible in the code
 
-Keep this section tight — the goal is orientation, not a full codebase analysis. If you're unsure which files are relevant, say so rather than reading broadly.
+Keep this section tight - the goal is orientation, not a full codebase analysis. If you're unsure which files are relevant, say so rather than reading broadly.
 
 ## 4. Propose an approach
 
-Based on steps 1–3, write a brief implementation plan:
+Based on steps 1-3, write a brief implementation plan:
 - What needs to be built (in order)
 - Which files will be created or modified
 - Any key decisions or trade-offs to flag before starting

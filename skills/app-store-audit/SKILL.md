@@ -36,7 +36,7 @@ Perform a thorough audit of this project for App Store readiness. Check each cat
   - Guest WiFi credentials
   - Plex server (optional)
   - Which HomeKit home/cameras to display
-- If not, flag as a warning — App Store reviewers expect apps to be usable out of the box
+- If not, flag as a warning - App Store reviewers expect apps to be usable out of the box
 
 ### Code Quality (warnings)
 - Run `npx tsc --noEmit` and report any type errors
@@ -51,7 +51,7 @@ Perform a thorough audit of this project for App Store readiness. Check each cat
 
 ### App Transport Security (warnings)
 - Check for any HTTP (non-HTTPS) URLs that would need ATS exceptions
-- Plex local server access may need an ATS exception — flag this
+- Plex local server access may need an ATS exception - flag this
 
 ### Device Compatibility (suggestions)
 - Verify the app handles different iPad sizes gracefully
@@ -62,8 +62,8 @@ Perform a thorough audit of this project for App Store readiness. Check each cat
 
 Group findings by severity:
 
-**🚫 Blockers** — Must fix before submission
-**⚠️ Warnings** — Likely to cause issues in review
-**💡 Suggestions** — Would improve the submission
+**🚫 Blockers** - Must fix before submission
+**⚠️ Warnings** - Likely to cause issues in review
+**💡 Suggestions** - Would improve the submission
 
 For each finding, include: what the issue is, where in the code it occurs, and a brief recommendation for fixing it.

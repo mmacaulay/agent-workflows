@@ -1,6 +1,6 @@
 ---
 name: release-prep
-description: Prepare for a new release — bump version, verify environment config is abstracted, generate changelog from recent commits, and run final checks. Use before building for TestFlight or App Store submission.
+description: Prepare for a new release - bump version, verify environment config is abstracted, generate changelog from recent commits, and run final checks. Use before building for TestFlight or App Store submission.
 ---
 
 Prepare the project for a release. Walk through each step and report status.
@@ -34,7 +34,7 @@ Prepare the project for a release. Walk through each step and report status.
 
 ## 3. Create and push a build tag
 
-- Create a git tag named `build/<buildNumber>` (e.g. `build/8`) at HEAD — after the bump commit above
+- Create a git tag named `build/<buildNumber>` (e.g. `build/8`) at HEAD - after the bump commit above
 - Push the tag to origin immediately so it's available for future changelog scoping:
   ```bash
   git tag build/<N> && git push origin build/<N>
@@ -72,7 +72,7 @@ Prepare the project for a release. Walk through each step and report status.
   - ...
   ```
 
-  Omit any category that has no entries. Use the same user-friendly grouping from step 4 — not raw commit messages. Write the entry with the Write or Edit tool so it is persisted to disk.
+  Omit any category that has no entries. Use the same user-friendly grouping from step 4 - not raw commit messages. Write the entry with the Write or Edit tool so it is persisted to disk.
 
 ## 6. Environment & config check
 

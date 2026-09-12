@@ -33,7 +33,7 @@ To make them visible to an agent that reads a repository's own `AGENTS.md`, vend
 submodule and point at it:
 
 ```bash
-git submodule add https://github.com/maplesmith/claude-skills .agent/workflows
+git submodule add https://github.com/maplesmith/agent-workflows .agent/workflows
 ```
 
 Then add a line to the consuming repository's `AGENTS.md`:
@@ -46,7 +46,7 @@ starting work, shipping a PR, or preparing a release.
 ## Using these in Claude Code
 
 ```
-/plugin marketplace add maplesmith/claude-skills
+/plugin marketplace add maplesmith/agent-workflows
 /plugin install maplesmith-workflows@maplesmith
 ```
 

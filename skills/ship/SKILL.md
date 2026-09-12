@@ -1,6 +1,6 @@
 ---
 name: ship
-description: Complete the shipping workflow for a finished feature — run checks, sync product docs, write a conventional commit, push, and open a well-formed PR with acceptance criteria and Closes reference. Use when implementation is done and ready to ship. Invoke as /ship or /ship #187 if the issue number isn't obvious from the branch name.
+description: Complete the shipping workflow for a finished feature - run checks, sync product docs, write a conventional commit, push, and open a well-formed PR with acceptance criteria and Closes reference. Use when implementation is done and ready to ship. Invoke as /ship or /ship #187 if the issue number isn't obvious from the branch name.
 ---
 
 Run this when implementation is complete. Covers everything from "done coding" to "PR open."
@@ -11,7 +11,7 @@ Run this when implementation is complete. Covers everything from "done coding" t
 git branch --show-current
 ```
 
-If on `main`, stop and warn: "You're on main — run /start-work first to create a feature branch."
+If on `main`, stop and warn: "You're on main - run /start-work first to create a feature branch."
 
 Check for uncommitted changes:
 ```bash
@@ -38,14 +38,14 @@ npx tsc --noEmit 2>&1
 npm test -- --selectProjects unit --ci --silent 2>&1
 ```
 
-**If checks fail, stop here.** Report the failures and fix them before proceeding — do not open a PR with a broken build.
+**If checks fail, stop here.** Report the failures and fix them before proceeding - do not open a PR with a broken build.
 
 ## 4. Sync docs
 
 Run the sync-docs workflow inline:
 
 - If `docs/roadmap.md` exists, does this work check off any unchecked `- [ ]` items? If yes, update them to `- [x]` with the issue reference.
-- Check the related GitHub issue — are the labels and phase correct? Does the issue have complete AC?
+- Check the related GitHub issue - are the labels and phase correct? Does the issue have complete AC?
 - If the project keeps a PRD, did any P0/P1 requirement get satisfied by this work?
 - Note any new issues surfaced that should be filed.
 
@@ -58,7 +58,7 @@ Review what should be staged:
 git status --short
 ```
 
-Stage relevant files (be explicit — don't blanket `git add .`):
+Stage relevant files (be explicit - don't blanket `git add .`):
 ```bash
 git add <file1> <file2> ...
 ```

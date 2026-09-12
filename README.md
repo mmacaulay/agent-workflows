@@ -1,4 +1,4 @@
-# claude-skills
+# agent-workflows
 
 Shared development workflows for the Maplesmith app family, used by
 [perchhome](https://github.com/maplesmith/perchhome),
@@ -24,5 +24,6 @@ they carry no absolute paths and no assumptions about a particular app.
 
 ## Naming
 
-The repository is called `claude-skills` for historical reasons. The content is not
-Claude-specific and `skills/` is deliberately agent-neutral.
+Nothing here is Claude-specific. The playbooks are plain Markdown and the manifests under
+`.claude-plugin/` exist only because that is where Claude Code looks; any other agent reads
+`skills/` directly.
