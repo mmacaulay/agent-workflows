@@ -41,40 +41,23 @@ Prepare the project for a release. Walk through each step and report status.
   ```
 - When shipping to the App Store (not just TestFlight), also create and push a `v<version>` tag (e.g. `v1.0.0`) on the same commit.
 
-## 4. Generate changelog
+## 4. Release notes and changelog
 
-- Gather commits since the last build tag. Since tags now follow `build/<N>`, use:
-  ```bash
-  git log --oneline $(git tag --list 'build/*' | sort -t/ -k2 -n | tail -2 | head -1)..HEAD
-  ```
-  Fall back to the last 50 commits if no build tags exist yet.
-- Group commits into categories: Features, Fixes, Improvements, Internal
-- Write a concise, user-friendly changelog (not raw commit messages)
+Delegate to the `release-notes` playbook rather than repeating its logic here, so there is one
+source of truth for how notes get written:
 
-## 5. Write changelog
+```
+/release-notes
+```
 
-- If `CHANGELOG.md` does not exist at the repo root, create it with a standard header.
-- Prepend a new entry for this release at the top of the file (below any header), using this format:
+It scopes from the last `v*` tag, sources from merged PRs and closed issues rather than raw
+commit subjects, checks in on anything it cannot classify, then writes the `CHANGELOG.md` entry
+and the App Store "What's New" copy.
 
-  ```
-  ## [<version>] - <YYYY-MM-DD>
+If the user wants to skip it, the minimum is still a `CHANGELOG.md` entry for this version
+describing user-visible changes, plus a note that the App Store copy is outstanding.
 
-  ### Features
-  - ...
-
-  ### Fixes
-  - ...
-
-  ### Improvements
-  - ...
-
-  ### Internal
-  - ...
-  ```
-
-  Omit any category that has no entries. Use the same user-friendly grouping from step 4 - not raw commit messages. Write the entry with the Write or Edit tool so it is persisted to disk.
-
-## 6. Environment & config check
+## 5. Environment & config check
 
 - Verify no secrets or API keys are committed to source (check git-tracked files only):
   ```bash
@@ -90,17 +73,17 @@ Prepare the project for a release. Walk through each step and report status.
 > where those values are configured as EAS secrets. Consult the project's own docs for the exact
 > variable names; they differ per app.
 
-## 7. Run checks
+## 6. Run checks
 
 - Type-check: `npx tsc --noEmit`
 - Tests: `npm test -- --ci --silent`
 - Report results
 
-## 8. Summary
+## 7. Summary
 
 Present a release summary:
 - Version: old → new
 - Build number: old → new
-- Changelog (formatted for App Store "What's New" field)
+- Changelog and App Store "What's New" copy (from `/release-notes`)
 - Any issues found during checks
 - Next steps (build with `eas build`, submit to TestFlight, etc.)
