@@ -16,6 +16,7 @@ depends on that.
 | [`skills/release-prep/SKILL.md`](skills/release-prep/SKILL.md) | Preparing a build for TestFlight or the App Store. Version bump, tag, checks. |
 | [`skills/release-notes/SKILL.md`](skills/release-notes/SKILL.md) | Turning merged work into a CHANGELOG entry and App Store "What's New" copy. |
 | [`skills/app-store-audit/SKILL.md`](skills/app-store-audit/SKILL.md) | Before a submission. Checks for common rejection causes. |
+| [`skills/widget-scaffold/SKILL.md`](skills/widget-scaffold/SKILL.md) | Adding a new dashboard widget. Scaffolds the card, settings screen, types, and tests. |
 
 ## Using these outside Claude Code
 
@@ -57,7 +58,7 @@ The playbooks then appear as slash commands (`/orient`, `/ship`, `/release-notes
 Repository-specific workflows stay in their own repositories, because they encode knowledge that
 does not generalise:
 
-- `widget-scaffold` and `generate-backgrounds` assume Perch Home's widget system and asset layout
+- `generate-backgrounds` assumes Perch Home's asset layout and manifest generator
 - `backend-deploy` assumes the Cloudflare Worker in `perch-backend`
 - `issue-from-roadmap`, `sync-docs`, and `revisit-decision` assume a `docs/` tree with a roadmap,
   a PRD, and a decisions log
