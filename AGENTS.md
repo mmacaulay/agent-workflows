@@ -66,6 +66,23 @@ does not generalise:
 The test for belonging here is whether a playbook would still make sense in an app that has none
 of those things.
 
+## Publishing a change
+
+Consumers install by version, and the install cache is keyed on it. Updating the marketplace
+refreshes the clone but **not** the installed inventory, so a new or renamed skill stays
+invisible until the version moves.
+
+Bump `version` in `.claude-plugin/plugin.json` with any change consumers should pick up, then:
+
+```bash
+claude plugin marketplace update maplesmith
+claude plugin install maplesmith-workflows@maplesmith
+claude plugin details maplesmith-workflows   # confirm the skill count
+```
+
+Editing a playbook's body without bumping is fine for a typo, since the clone is what gets read
+at invoke time. Adding, removing, or renaming a skill is not.
+
 ## Changing a playbook
 
 These are consumed by more than one project, so treat a change the way you would treat a change
