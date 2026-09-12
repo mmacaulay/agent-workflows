@@ -1,0 +1,15 @@
+{
+  "name": "maplesmith",
+  "description": "Maplesmith's shared agent workflows.",
+  "owner": {
+    "name": "Maplesmith"
+  },
+  "plugins": [
+    {
+      "name": "maplesmith-workflows",
+      "description": "Shared development workflows for the Maplesmith app family.",
+      "source": "./",
+      "category": "workflow"
+    }
+  ]
+}
