@@ -1,7 +1,7 @@
 {
   "name": "maplesmith-workflows",
   "description": "Shared development workflows for the Maplesmith app family: orient, start work, run checks, ship a PR, prepare a release, write release notes, and audit App Store readiness. Written as plain Markdown playbooks so non-Claude agents can read them too.",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "author": {
     "name": "Maplesmith"
   }

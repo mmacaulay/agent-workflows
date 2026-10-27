@@ -85,28 +85,50 @@ git push -u origin <branch-name>
 
 ## 7. Open the PR
 
-Write a PR description with these sections:
+Write the description for a reviewer who wasn't in the session. Anything that was only explained in chat needs explaining here, or leaving out.
+
+Writing rules:
+- Plain language first. Define a term the first time it appears, or avoid it.
+- One idea per bullet. If a bullet needs a semicolon or a parenthetical, split it.
+- Say what results mean, not just the numbers.
+- Deviations from the issue go first under Decisions, and are flagged in the AC too.
 
 ```
-## Summary
-<2-4 bullet points: what was built and why>
+## What this does
+<A short plain-language paragraph: what the change lets the product or user do, and where it fits (what it unblocks next). If there's a flow, follow with a numbered list of what now happens.>
+
+## Decisions worth reviewing
+<One entry per decision a reviewer might question. Deviations from the issue or spec come first.>
+
+**<The decision, in one sentence.>**
+<A sentence or two on why, including what the alternative would have broken.>
 
 ## Acceptance criteria
-<Copy AC from the issue, check off each item that is satisfied>
+<Copy AC from the issue and check off each satisfied item. Keep items short; explanations belong under Decisions, not in parentheses here. Leave unmet items unchecked and say why.>
 - [x] ...
 - [x] ...
 
-## Test notes
-<What was tested, how to verify, any device/config requirements>
+## How it was tested
+- **Automated:** <commands run, and what the tests cover>
+- **Manual or real data:** <what was run, what happened, and what that shows>
 
 ## Screenshots
-<If UI changed: note that screenshots or simulator captures should be attached>
+<If UI changed: attach screenshots or simulator captures. Omit this section otherwise.>
+
+## Where to look
+- `<path>`: <what it holds>
 
 Closes #<number>
 ```
 
+Leave out "Decisions worth reviewing" when there were no real decisions (a typo fix, a dependency bump) rather than padding it.
+
+Pass the body through a heredoc so backticks and quotes survive the shell:
+
 ```bash
-gh pr create --title "<commit subject>" --body "<description>"
+gh pr create --title "<commit subject>" --body-file - <<'EOF'
+<description>
+EOF
 ```
 
 ## 8. Report
