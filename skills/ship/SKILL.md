@@ -68,7 +68,6 @@ Write a conventional commit message:
 - Types: `feat`, `fix`, `docs`, `chore`, `refactor`, `test`
 - Subject: imperative, lowercase, ≤72 chars, no trailing period
 - Body (optional): explain *why* if non-obvious
-- Always end with `Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>`
 
 Example:
 ```
