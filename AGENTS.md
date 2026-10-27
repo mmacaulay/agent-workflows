@@ -68,20 +68,21 @@ of those things.
 
 ## Publishing a change
 
-Consumers install by version, and the install cache is keyed on it. Updating the marketplace
-refreshes the clone but **not** the installed inventory, so a new or renamed skill stays
-invisible until the version moves.
+Consumers install by version, and skills are loaded from a per-version copy in the install
+cache, not from the marketplace clone. Updating the marketplace refreshes the clone but **not**
+the installed copy, so no change reaches consumers until the version moves, including an edit
+to a playbook's body.
 
-Bump `version` in `.claude-plugin/plugin.json` with any change consumers should pick up, then:
+Bump `version` in `.claude-plugin/plugin.json` with every change consumers should pick up, then:
 
 ```bash
 claude plugin marketplace update maplesmith
-claude plugin install maplesmith-workflows@maplesmith
-claude plugin details maplesmith-workflows   # confirm the skill count
+claude plugin update maplesmith-workflows@maplesmith   # install is a no-op once installed
 ```
 
-Editing a playbook's body without bumping is fine for a typo, since the clone is what gets read
-at invoke time. Adding, removing, or renaming a skill is not.
+Restart the session to load the new version. `claude plugin details` reports the marketplace's
+version, not the installed one, so check `installPath` in `~/.claude/plugins/installed_plugins.json`
+to confirm the upgrade landed.
 
 ## Changing a playbook
 
