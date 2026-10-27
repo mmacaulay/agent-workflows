@@ -1,12 +1,7 @@
 # agent-workflows
 
-Shared development workflows for the Maplesmith app family, used by
-[perchhome](https://github.com/maplesmith/perchhome),
-[aviary](https://github.com/maplesmith/aviary), and whatever comes next.
-
-Same idea as [perch-core](https://github.com/maplesmith/perch-core), applied to process rather
-than code: the workflows were duplicated per repository and drifting, so they moved somewhere
-versioned that every app consumes.
+Shared development workflows for Expo apps. The workflows were duplicated per repository and
+drifting, so they moved somewhere versioned that every app consumes.
 
 **Start at [AGENTS.md](AGENTS.md)** for the playbook index and usage.
 

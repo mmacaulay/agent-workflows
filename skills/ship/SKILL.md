@@ -23,7 +23,7 @@ Report what's changed so far.
 
 ## 2. Determine the related issue
 
-Derive the issue number from the branch name (e.g., `feat/google-calendar-187` → `#187`). If not obvious, ask the user.
+Derive the issue number from the branch name (e.g., `feat/dark-mode-187` → `#187`). If not obvious, ask the user.
 
 Fetch the issue to get AC for the PR description:
 ```bash
@@ -35,14 +35,14 @@ gh issue view <number> --json number,title,body,labels
 Run the check suite:
 ```bash
 npx tsc --noEmit 2>&1
-npm test -- --selectProjects unit --ci --silent 2>&1
+npm test -- --ci --silent 2>&1
 ```
 
 **If checks fail, stop here.** Report the failures and fix them before proceeding - do not open a PR with a broken build.
 
 ## 4. Sync docs
 
-Run the sync-docs workflow inline:
+Bring project docs in line with the work:
 
 - If `docs/roadmap.md` exists, does this work check off any unchecked `- [ ]` items? If yes, update them to `- [x]` with the issue reference.
 - Check the related GitHub issue - are the labels and phase correct? Does the issue have complete AC?
@@ -71,10 +71,10 @@ Write a conventional commit message:
 
 Example:
 ```
-feat(calendar): integrate Google Calendar via GoogleSignIn SDK
+feat(settings): add a dark mode toggle
 
-On-device PKCE OAuth flow; tokens stored in SecureStore. Calendar widget
-now renders Apple Calendar and Google Calendar events simultaneously.
+Follows the system appearance by default. The toggle overrides it, and
+the choice persists across launches.
 ```
 
 ## 6. Push
@@ -135,4 +135,4 @@ EOF
 
 Print the PR URL and a one-line summary of what shipped.
 
-If any new issues were identified during sync-docs (step 4), list them and ask if the user wants to file them now.
+If any new issues were identified while syncing docs (step 4), list them and ask if the user wants to file them now.

@@ -27,7 +27,7 @@ npx tsc --noEmit 2>&1
 Jest requires macOS-native binaries from node_modules that aren't available in the Cowork/scheduled-task Linux sandbox. Only run tests when executing in Claude Code on the Mac terminal:
 
 ```bash
-npm test -- --selectProjects unit --ci --silent 2>&1
+npm test -- --ci --silent 2>&1
 ```
 
 To detect the environment: if `uname -s` returns "Linux", skip tests and note they can only run locally.

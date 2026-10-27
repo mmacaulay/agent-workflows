@@ -30,7 +30,7 @@ If the project has `docs/roadmap.md`, find the section for this issue's phase. I
 - Whether there are dependencies (other unchecked items that should come first)
 - Any notes in the roadmap about implementation approach or constraints
 
-If the project keeps a PRD (`docs/prd-v1.md` or similar) and the issue touches a core feature, scan the relevant section for requirements and decisions that apply. Skip when there is no such doc; not every project in this family keeps one.
+If the project keeps a PRD (`docs/prd-v1.md` or similar) and the issue touches a core feature, scan the relevant section for requirements and decisions that apply. Skip when there is no such doc; not every project keeps one.
 
 Report what you found: "This is a Phase X item. The roadmap says [X]. The PRD says [Y]."
 
@@ -72,8 +72,8 @@ Derive the branch name from the issue title and number using this convention:
 
 | Work type | Pattern | Example |
 |-----------|---------|---------|
-| New feature | `feat/<short-description>-<issue>` | `feat/google-calendar-187` |
-| Bug fix | `fix/<short-description>-<issue>` | `fix/weather-bg-clipping-185` |
+| New feature | `feat/<short-description>-<issue>` | `feat/dark-mode-187` |
+| Bug fix | `fix/<short-description>-<issue>` | `fix/login-crash-185` |
 | Doc/planning | `docs/<short-description>` | `docs/roadmap-sync` |
 | Chore/config | `chore/<short-description>` | `chore/workflow-skills` |
 | Refactor | `refactor/<short-description>` | `refactor/settings-store` |
@@ -89,4 +89,4 @@ Report:
 - One-sentence summary of the plan
 - The first concrete thing to implement
 
-Example: "On `feat/google-calendar-187` branched from `b8a05ab`. Plan confirmed. Starting with GoogleSignIn SDK integration in the calendar settings sub-screen."
+Example: "On `feat/dark-mode-187` branched from `b8a05ab`. Plan confirmed. Starting with the theme toggle in the settings screen."

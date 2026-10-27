@@ -13,7 +13,6 @@ Perform a thorough audit of this project for App Store readiness. Check each cat
   - `NSPhotoLibraryUsageDescription` (Photos)
   - `NSLocationWhenInUseUsageDescription` (Core Location)
   - `NSMotionUsageDescription` (Core Motion)
-  - `NSHomeKitUsageDescription` (HomeKit, if the app shows smart home devices)
   - `NSCameraUsageDescription` (if the device camera is used)
   - `NSLocalNetworkUsageDescription` (if the app reaches devices on the local network)
   - `NSRemindersUsageDescription` or `NSRemindersFullAccessUsageDescription` (EventKit reminders)
@@ -57,7 +56,7 @@ Perform a thorough audit of this project for App Store readiness. Check each cat
 
 ### Configuration & Onboarding (warnings)
 - Can a new user configure everything the app displays, through onboarding or settings, without
-  editing code? Walk the widgets the shipping templates actually place and check each one.
+  editing code? Walk each screen and feature the app ships and check each one.
 - If any displayed value can only be set in source, flag it. Reviewers expect an app to be
   usable out of the box.
 
@@ -74,8 +73,8 @@ Perform a thorough audit of this project for App Store readiness. Check each cat
 
 ### App Transport Security (warnings)
 - Check for any HTTP (non-HTTPS) URLs that would need ATS exceptions
-- Local network access, for example to a device streaming on the LAN, may need an exception.
-  Flag it rather than assuming the default policy covers it.
+- Local network access may need an exception. Flag it rather than assuming the default policy
+  covers it.
 
 ### Device Compatibility (suggestions)
 - Verify the app handles different iPad sizes gracefully

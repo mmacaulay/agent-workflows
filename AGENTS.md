@@ -1,6 +1,6 @@
 # Agent workflows
 
-Shared development playbooks for the Maplesmith app family. Every playbook is plain Markdown
+Shared development playbooks for Expo apps. Every playbook is plain Markdown
 under `skills/`, so any coding agent can read one directly. Claude Code additionally installs
 this repository as a plugin and surfaces them as slash commands; nothing about the content
 depends on that.
@@ -16,7 +16,6 @@ depends on that.
 | [`skills/release-prep/SKILL.md`](skills/release-prep/SKILL.md) | Preparing a build for TestFlight or the App Store. Version bump, tag, checks. |
 | [`skills/release-notes/SKILL.md`](skills/release-notes/SKILL.md) | Turning merged work into a CHANGELOG entry and App Store "What's New" copy. |
 | [`skills/app-store-audit/SKILL.md`](skills/app-store-audit/SKILL.md) | Before a submission. Checks for common rejection causes. |
-| [`skills/widget-scaffold/SKILL.md`](skills/widget-scaffold/SKILL.md) | Adding a new dashboard widget. Scaffolds the card, settings screen, types, and tests. |
 
 ## Using these outside Claude Code
 
@@ -28,13 +27,13 @@ Read the relevant playbook and follow it. They assume only:
 
 No absolute paths, no machine-specific configuration. Where a playbook wants a project document
 such as `docs/roadmap.md`, it checks whether the file exists first and skips that step when it
-does not, because not every project in this family keeps one.
+does not, because not every project keeps one.
 
 To make them visible to an agent that reads a repository's own `AGENTS.md`, vendor this repo as a
 submodule and point at it:
 
 ```bash
-git submodule add https://github.com/maplesmith/agent-workflows .agent/workflows
+git submodule add https://github.com/mmacaulay/agent-workflows .agent/workflows
 ```
 
 Then add a line to the consuming repository's `AGENTS.md`:
@@ -47,8 +46,8 @@ starting work, shipping a PR, or preparing a release.
 ## Using these in Claude Code
 
 ```
-/plugin marketplace add maplesmith/agent-workflows
-/plugin install maplesmith-workflows@maplesmith
+/plugin marketplace add mmacaulay/agent-workflows
+/plugin install agent-workflows@mmacaulay
 ```
 
 The playbooks then appear as slash commands (`/orient`, `/ship`, `/release-notes`, and so on).
@@ -56,12 +55,8 @@ The playbooks then appear as slash commands (`/orient`, `/ship`, `/release-notes
 ## What is not here
 
 Repository-specific workflows stay in their own repositories, because they encode knowledge that
-does not generalise:
-
-- `generate-backgrounds` assumes Perch Home's asset layout and manifest generator
-- `backend-deploy` assumes the Cloudflare Worker in `perch-backend`
-- `issue-from-roadmap`, `sync-docs`, and `revisit-decision` assume a `docs/` tree with a roadmap,
-  a PRD, and a decisions log
+does not generalise: a particular asset pipeline, a particular backend's deploy, or a `docs/`
+tree with a roadmap, a PRD, and a decisions log.
 
 The test for belonging here is whether a playbook would still make sense in an app that has none
 of those things.
@@ -76,8 +71,8 @@ to a playbook's body.
 Bump `version` in `.claude-plugin/plugin.json` with every change consumers should pick up, then:
 
 ```bash
-claude plugin marketplace update maplesmith
-claude plugin update maplesmith-workflows@maplesmith   # install is a no-op once installed
+claude plugin marketplace update mmacaulay
+claude plugin update agent-workflows@mmacaulay   # install is a no-op once installed
 ```
 
 Restart the session to load the new version. `claude plugin details` reports the marketplace's

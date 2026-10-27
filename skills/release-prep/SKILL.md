@@ -68,8 +68,8 @@ describing user-visible changes, plus a note that the App Store copy is outstand
 
 > **Local Xcode builds only:** If the project has a `check:release-env` script, run it. It
 > validates that `ios/.xcode.env.local` carries the values a local archive needs, typically
-> `NODE_BINARY`, a Sentry auth token, the backend base URL for the production environment, and
-> any App Attest environment flag, and that the backend is reachable. Skip this for EAS builds,
+> `NODE_BINARY` plus any service tokens and production URLs the app depends on, and that those
+> services are reachable. Skip this for EAS builds,
 > where those values are configured as EAS secrets. Consult the project's own docs for the exact
 > variable names; they differ per app.
 

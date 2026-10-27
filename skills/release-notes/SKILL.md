@@ -50,9 +50,6 @@ Commit subjects are the thinnest source. Prefer, in this order:
    git log --oneline "$BASE"..origin/main --no-merges
    ```
 
-If this release pulls in a new `@maplesmith/perch-core` version, check that repo too: a fix that
-lives in core is still a user-visible fix here.
-
 ## 3. Classify by audience, not by commit prefix
 
 `feat:` and `fix:` describe the change; they do not tell you whether a user can perceive it. Sort
@@ -105,9 +102,8 @@ header:
 
 Omit empty sections. Rules for the prose:
 
-- Describe the effect on the user, not the implementation. "Weather no longer gets stuck on a
-  loading spinner when the app is misconfigured" beats "add unconfigured status to
-  useBackendSession".
+- Describe the effect on the user, not the implementation. "Settings are no longer reset
+  when the app updates" beats "migrate persisted settings store to schema v2".
 - One line per item. Merge several PRs into one line when they were one piece of work.
 - Reference the issue or PR number in parentheses where it helps someone go deeper.
 - No em-dashes, per the repo's style. Use a regular dash.

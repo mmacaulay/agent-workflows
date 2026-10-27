@@ -39,7 +39,7 @@ gh issue list --state open --json number,title,labels --limit 60 \
   | jq 'sort_by(.labels[0].name) | .[] | {number, title, phase: (.labels[] | select(.name | startswith("phase:")) | .name)}'
 ```
 
-Group by phase and show only the current and next phase. Don't list Phase 4/5 items unless there's nothing else - those aren't actionable yet.
+Group by phase and show only the current and next phase. Don't list later phases unless there's nothing else - those aren't actionable yet.
 
 For each open issue in the current phase, note whether it has a linked PR or is unstarted.
 
@@ -51,7 +51,7 @@ Quick check:
 [ -f docs/roadmap.md ] && grep -c "\- \[ \]" docs/roadmap.md
 ```
 
-Count unchecked roadmap items in Phase 2 and Phase 3. If there are open items with no GitHub issue, flag them - they're work with no owner.
+Count unchecked roadmap items in the current and next phase. If there are open items with no GitHub issue, flag them - they're work with no owner.
 
 Check if any open PR is missing a `Closes #N` reference (PRs that won't auto-close their issue on merge).
 

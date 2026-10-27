@@ -1,13 +1,13 @@
 {
-  "name": "maplesmith",
-  "description": "Maplesmith's shared agent workflows.",
+  "name": "mmacaulay",
+  "description": "Matt MacAulay's shared agent workflows.",
   "owner": {
-    "name": "Maplesmith"
+    "name": "Matt MacAulay"
   },
   "plugins": [
     {
-      "name": "maplesmith-workflows",
-      "description": "Shared development workflows for the Maplesmith app family.",
+      "name": "agent-workflows",
+      "description": "Shared development workflows for Expo apps.",
       "source": "./",
       "category": "workflow"
     }
