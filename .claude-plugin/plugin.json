@@ -1,8 +1,0 @@
-{
-  "name": "agent-workflows",
-  "description": "Shared development workflows for Expo apps: orient, start work, run checks, ship a PR, prepare a release, write release notes, and audit App Store readiness. Written as plain Markdown playbooks so non-Claude agents can read them too.",
-  "version": "0.4.0",
-  "author": {
-    "name": "Matt MacAulay"
-  }
-}

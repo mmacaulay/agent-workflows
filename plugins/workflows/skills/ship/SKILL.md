@@ -1,42 +1,55 @@
 ---
 name: ship
-description: Complete the shipping workflow for a finished feature - run checks, sync product docs, write a conventional commit, push, and open a well-formed PR with acceptance criteria and Closes reference. Use when implementation is done and ready to ship. Invoke as /ship or /ship #187 if the issue number isn't obvious from the branch name.
+description: Complete the shipping workflow for a finished feature - run checks, sync docs, write a conventional commit, push, and open a well-formed PR with acceptance criteria and a link to its GitHub issue or Jira ticket. Use when implementation is done and ready to ship. Invoke as /ship, or /ship #187 or /ship PROJ-123 if the work item isn't obvious from the branch name.
 ---
 
 Run this when implementation is complete. Covers everything from "done coding" to "PR open."
 
 ## 1. Confirm we're on a feature branch
 
+Find the default branch, rather than assuming `main`, and use it wherever `<default>` appears
+below:
+
+```bash
+git symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null \
+  || gh repo view --json defaultBranchRef -q .defaultBranchRef.name
+```
+
+Drop any `origin/` prefix from the result. If both fail, use `main`.
+
 ```bash
 git branch --show-current
 ```
 
-If on `main`, stop and warn: "You're on main - run /start-work first to create a feature branch."
+If on the default branch, stop and warn: "You're on <default> - run /start-work first to create a feature branch."
 
 Check for uncommitted changes:
 ```bash
 git status --short
-git diff main...HEAD --stat
+git diff <default>...HEAD --stat
 ```
 
 Report what's changed so far.
 
-## 2. Determine the related issue
+## 2. Determine the related work item
 
-Derive the issue number from the branch name (e.g., `feat/dark-mode-187` → `#187`). If not obvious, ask the user.
+Derive it from the branch name: a trailing number is a GitHub issue (`feat/dark-mode-187` → `#187`),
+a key like `PROJ-123` is a Jira ticket. If the project's `AGENTS.md` or `CLAUDE.md` names the
+tracker, trust that over the branch name. If it's still not obvious, ask the user.
 
-Fetch the issue to get AC for the PR description:
+Fetch it to get AC for the PR description.
+
+**GitHub issue:**
 ```bash
 gh issue view <number> --json number,title,body,labels
 ```
 
+**Jira ticket:** use whatever Jira access is available (an Atlassian MCP connector, `acli`, or
+the `jira` CLI). If there is none, ask the user to paste the AC.
+
 ## 3. Run checks
 
-Run the check suite:
-```bash
-npx tsc --noEmit 2>&1
-npm test -- --ci --silent 2>&1
-```
+Follow the `check` playbook. It works out what this project's type-check, lint, and tests are.
 
 **If checks fail, stop here.** Report the failures and fix them before proceeding - do not open a PR with a broken build.
 
@@ -44,9 +57,9 @@ npm test -- --ci --silent 2>&1
 
 Bring project docs in line with the work:
 
-- If `docs/roadmap.md` exists, does this work check off any unchecked `- [ ]` items? If yes, update them to `- [x]` with the issue reference.
-- Check the related GitHub issue - are the labels and phase correct? Does the issue have complete AC?
-- If the project keeps a PRD, did any P0/P1 requirement get satisfied by this work?
+- If the project keeps a plan or roadmap doc, does this work complete any unchecked `- [ ]` items? If yes, update them to `- [x]` with the issue or ticket reference.
+- Does the issue or ticket have complete AC?
+- Did this change make anything in the README, `AGENTS.md`, or other docs out of date?
 - Note any new issues surfaced that should be filed.
 
 Make any doc updates now, before the commit, so they go in the same PR.
@@ -118,10 +131,17 @@ Writing rules:
 ## Where to look
 - `<path>`: <what it holds>
 
-Closes #<number>
+<Link line: see below>
 ```
 
 Leave out "Decisions worth reviewing" when there were no real decisions (a typo fix, a dependency bump) rather than padding it.
+
+End with the link to the work item:
+- **GitHub issue:** `Closes #<number>`, so merging closes the issue.
+- **Jira ticket:** `Jira: <KEY>`, and put the key in the PR title too, following the project's
+  title convention if its instructions set one, otherwise as a prefix: `PROJ-123 feat(scope): ...`.
+  Merging does not close a Jira ticket. Tell the user it will need moving unless their Jira
+  automation does it.
 
 Pass the body through a heredoc so backticks and quotes survive the shell:
 

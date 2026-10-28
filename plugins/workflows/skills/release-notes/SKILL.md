@@ -1,18 +1,30 @@
 ---
 name: release-notes
-description: Turn everything merged since the last App Store release into human-readable release notes (a CHANGELOG.md entry and short App Store "What's New" copy), sourcing from merged PRs and closed issues rather than raw commit subjects, and checking in on anything ambiguous. Use before submitting a build. Invoke as /release-notes, or /release-notes v1.1.0 to scope from a specific tag.
+description: Turn everything merged since the last release into human-readable release notes (a CHANGELOG.md entry, plus short App Store "What's New" copy for mobile apps), sourcing from merged PRs and closed issues or Jira tickets rather than raw commit subjects, and checking in on anything ambiguous. Use before cutting a release. Invoke as /release-notes, or /release-notes v1.1.0 to scope from a specific tag.
 ---
 
-Produce release notes a person would actually want to read. Two audiences, two outputs, one pass
-over the same material.
+Produce release notes a person would actually want to read. The CHANGELOG entry is always
+written. For an app that ships through the App Store, there is a second audience and a second
+output, written from the same pass over the material.
 
-`release-prep` calls this for its changelog step. Keep the generation logic here so there is one
-source of truth.
+The Expo `release-prep` playbook calls this for its changelog step. Keep the generation logic
+here so there is one source of truth.
 
 ## 1. Establish the range
 
-Release notes cover everything since the last **App Store release**, not the last TestFlight
-build. Those are different tags: `v<version>` marks a release, `build/<N>` marks a build.
+Find the default branch, rather than assuming `main`, and use it wherever `<default>` appears
+below:
+
+```bash
+git symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null \
+  || gh repo view --json defaultBranchRef -q .defaultBranchRef.name
+```
+
+Drop any `origin/` prefix from the result. If both fail, use `main`.
+
+Release notes cover everything since the last **release**, which is the last `v<version>` tag.
+In an app that also tags individual builds (`build/<N>` for TestFlight, for example), those do
+not count: a release spans every build since the previous one.
 
 ```bash
 git tag --list 'v*' --sort=-v:refname | head -3
@@ -26,15 +38,15 @@ before you spend effort on the wrong window:
 
 ```bash
 BASE=$(git tag --list 'v*' --sort=-v:refname | head -1)
-git log --oneline "$BASE"..origin/main --no-merges | wc -l
+git log --oneline "$BASE"..origin/<default> --no-merges | wc -l
 ```
 
 ## 2. Gather material, in order of how much intent it carries
 
 Commit subjects are the thinnest source. Prefer, in this order:
 
-1. **Merged PRs.** Title and body, including the acceptance criteria this repo requires. This is
-   where the reasoning lives.
+1. **Merged PRs.** Title and body, including any acceptance criteria. This is where the
+   reasoning lives.
    ```bash
    BASE_DATE=$(git log -1 --format=%aI "$BASE")
    gh pr list --state merged --limit 100 --search "merged:>=${BASE_DATE%T*}" \
@@ -45,9 +57,11 @@ Commit subjects are the thinnest source. Prefer, in this order:
    gh issue list --state closed --limit 100 --search "closed:>=${BASE_DATE%T*}" \
      --json number,title,labels
    ```
+   If the project tracks work in Jira, use the tickets referenced by the merged PRs instead,
+   fetched with whatever Jira access is available. Without Jira access, rely on the PRs.
 3. **Commits**, to catch anything that landed without a PR.
    ```bash
-   git log --oneline "$BASE"..origin/main --no-merges
+   git log --oneline "$BASE"..origin/<default> --no-merges
    ```
 
 ## 3. Classify by audience, not by commit prefix
@@ -55,7 +69,7 @@ Commit subjects are the thinnest source. Prefer, in this order:
 `feat:` and `fix:` describe the change; they do not tell you whether a user can perceive it. Sort
 every item into exactly one of:
 
-- **User-facing** - someone using the app would notice. New capability, changed behaviour, a bug
+- **User-facing** - someone using the product would notice. New capability, changed behaviour, a bug
   they could have hit, removed functionality.
 - **Internal** - refactors, dependency bumps, CI, tests, docs, packaging. Real work, no
   perceptible difference.
@@ -113,6 +127,9 @@ Write it with the Write or Edit tool so it lands on disk.
 
 ## 6. Write the App Store "What's New" copy
 
+Only for an app that ships through the App Store (an Expo project has an `app.json`; a native
+one has an `.xcodeproj`). Skip this step otherwise.
+
 Different job. The field allows 4000 characters; people read about three lines, in a small font,
 while deciding whether to tap Update.
 
@@ -130,7 +147,7 @@ Present it as a copy-paste block, since it goes straight into App Store Connect.
 - The range used, and the tag it was based on
 - Counts: user-facing vs internal
 - The CHANGELOG entry as written, and its path
-- The "What's New" block
+- The "What's New" block, if step 6 applied
 - Anything deliberately left out, and why
 
 ## Notes

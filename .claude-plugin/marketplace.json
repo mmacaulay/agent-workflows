@@ -6,9 +6,15 @@
   },
   "plugins": [
     {
-      "name": "agent-workflows",
-      "description": "Shared development workflows for Expo apps.",
-      "source": "./",
+      "name": "workflows",
+      "description": "General development workflows: orient, start work, run checks, ship a PR, and write release notes.",
+      "source": "./plugins/workflows",
+      "category": "workflow"
+    },
+    {
+      "name": "expo",
+      "description": "Release and App Store workflows for Expo apps. Uses the workflows plugin.",
+      "source": "./plugins/expo",
       "category": "workflow"
     }
   ]

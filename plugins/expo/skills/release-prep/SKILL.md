@@ -43,12 +43,8 @@ Prepare the project for a release. Walk through each step and report status.
 
 ## 4. Release notes and changelog
 
-Delegate to the `release-notes` playbook rather than repeating its logic here, so there is one
-source of truth for how notes get written:
-
-```
-/release-notes
-```
+Delegate to the `release-notes` playbook from the workflows plugin rather than repeating its
+logic here, so there is one source of truth for how notes get written.
 
 It scopes from the last `v*` tag, sources from merged PRs and closed issues rather than raw
 commit subjects, checks in on anything it cannot classify, then writes the `CHANGELOG.md` entry
@@ -75,15 +71,13 @@ describing user-visible changes, plus a note that the App Store copy is outstand
 
 ## 6. Run checks
 
-- Type-check: `npx tsc --noEmit`
-- Tests: `npm test -- --ci --silent`
-- Report results
+Follow the `check` playbook from the workflows plugin, and report its results.
 
 ## 7. Summary
 
 Present a release summary:
 - Version: old → new
 - Build number: old → new
-- Changelog and App Store "What's New" copy (from `/release-notes`)
+- Changelog and App Store "What's New" copy (from `release-notes`)
 - Any issues found during checks
 - Next steps (build with `eas build`, submit to TestFlight, etc.)
