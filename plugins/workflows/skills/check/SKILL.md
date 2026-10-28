@@ -18,20 +18,25 @@ cd "$(git rev-parse --show-toplevel)"
 
 Take the first of these that applies, and say which one you used:
 
-1. **The project's own instructions.** If its `AGENTS.md` or `CLAUDE.md` says how to type-check,
+1. **The project config**, which the `setup-project` playbook writes. If it has a `Check` list, run
+   exactly those commands.
+   ```bash
+   f="$HOME/.config/agent-workflows/$(git remote get-url origin | sed -E 's#\.git$##; s#^.*[:/]([^/]+/[^/]+)$#\1#').md"; cat "$f" 2>/dev/null || echo "(no config)"
+   ```
+2. **The project's own instructions.** If its `AGENTS.md` or `CLAUDE.md` says how to type-check,
    lint, or test, do exactly that.
-2. **Node** (`package.json`). Run whichever of the `typecheck`, `check`, `lint`, and `test`
+3. **Node** (`package.json`). Run whichever of the `typecheck`, `check`, `lint`, and `test`
    scripts exist, in that order. Use the package manager the lockfile names: `pnpm-lock.yaml`
    means pnpm, `yarn.lock` means yarn, `bun.lock` or `bun.lockb` means bun, otherwise npm.
    Do not add runner-specific flags; Jest and Vitest accept different ones.
-3. **Python** (`pyproject.toml`, `requirements.txt`, or `manage.py`). Prefix commands with
+4. **Python** (`pyproject.toml`, `requirements.txt`, or `manage.py`). Prefix commands with
    `uv run` when there is a `uv.lock`. Run `ruff check` if ruff is a dependency, `mypy` if it is
    configured, then tests: `pytest` if it is a dependency, otherwise `python manage.py test` for
    a Django project.
-4. **Ruby** (`Gemfile`). Run `bundle exec rubocop` or `bundle exec standardrb`, whichever is in
+5. **Ruby** (`Gemfile`). Run `bundle exec rubocop` or `bundle exec standardrb`, whichever is in
    the bundle, then `bundle exec rspec` if there is a `spec/` directory, otherwise
    `bin/rails test`.
-5. **Makefile.** If it has `check`, `lint`, or `test` targets, run those.
+6. **Makefile.** If it has `check`, `lint`, or `test` targets, run those.
 
 If none of these applies, ask the user what to run rather than guessing.
 

@@ -7,6 +7,14 @@ Run this before writing any code or making any commits. Never commit directly to
 
 ## 0. Context
 
+Read the project config, which the `setup-project` playbook writes:
+
+```bash
+f="$HOME/.config/agent-workflows/$(git remote get-url origin | sed -E 's#\.git$##; s#^.*[:/]([^/]+/[^/]+)$#\1#').md"; cat "$f" 2>/dev/null || echo "(no config)"
+```
+
+Its `Tracker`, `Plan`, and `Branches` fields override the detection and defaults below.
+
 Find the default branch, rather than assuming `main`, and use it wherever `<default>` appears
 below:
 
@@ -17,7 +25,8 @@ git symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null \
 
 Drop any `origin/` prefix from the result. If both fail, use `main`.
 
-Work out the tracker. If the project's `AGENTS.md` or `CLAUDE.md` names one, use it. Otherwise
+Work out the tracker. Use the config's `Tracker` if it has one. Otherwise, if the project's
+`AGENTS.md` or `CLAUDE.md` names one, use it. Otherwise
 infer it from the work item: a key like `PROJ-123` is a Jira ticket, `#187` or a bare number is
 a GitHub issue. If neither tells you, ask.
 
@@ -43,8 +52,10 @@ Extract and note:
 
 ## 2. Surface plan context
 
-If the project keeps a plan or roadmap doc (for example under `docs/`), find the item(s) this
-work addresses. Identify:
+Use the plan doc the config names; if that file no longer exists, say so, suggest re-running
+`setup-project`, and skip this step rather than searching for another. `Plan: none` means skip this
+step. If the config has no `Plan` field, look for a plan or roadmap doc under `docs/`. Find the
+item(s) this work addresses. Identify:
 - Whether there are dependencies (other unchecked items that should come first)
 - Any notes about implementation approach or constraints
 
@@ -83,8 +94,8 @@ Once the approach is confirmed:
 git checkout <default> && git pull origin <default>
 ```
 
-Derive the branch name from the title and issue number or ticket key. If the project's
-instructions set a branch convention, follow that. Otherwise:
+Derive the branch name from the title and issue number or ticket key. If the config's
+`Branches` field or the project's instructions set a convention, follow that. Otherwise:
 
 | Work type | Pattern | Example |
 |-----------|---------|---------|

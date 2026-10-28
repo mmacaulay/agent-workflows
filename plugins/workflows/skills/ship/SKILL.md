@@ -7,6 +7,16 @@ Run this when implementation is complete. Covers everything from "done coding" t
 
 ## 1. Confirm we're on a feature branch
 
+Read the project config, which the `setup-project` playbook writes:
+
+```bash
+f="$HOME/.config/agent-workflows/$(git remote get-url origin | sed -E 's#\.git$##; s#^.*[:/]([^/]+/[^/]+)$#\1#').md"; cat "$f" 2>/dev/null || echo "(no config)"
+```
+
+Its `Tracker`, `Plan`, `PR titles`, and `Ship extras` fields override the detection and defaults
+below. If its `Plan` file no longer exists, say so, suggest re-running `setup-project`, and skip the
+plan step rather than searching for another.
+
 Find the default branch, rather than assuming `main`, and use it wherever `<default>` appears
 below:
 
@@ -34,8 +44,8 @@ Report what's changed so far.
 ## 2. Determine the related work item
 
 Derive it from the branch name: a trailing number is a GitHub issue (`feat/dark-mode-187` → `#187`),
-a key like `PROJ-123` is a Jira ticket. If the project's `AGENTS.md` or `CLAUDE.md` names the
-tracker, trust that over the branch name. If it's still not obvious, ask the user.
+a key like `PROJ-123` is a Jira ticket. If the config's `Tracker` or the project's `AGENTS.md`
+or `CLAUDE.md` names the tracker, trust that over the branch name. If it's still not obvious, ask the user.
 
 Fetch it to get AC for the PR description.
 
@@ -57,10 +67,11 @@ Follow the `check` playbook. It works out what this project's type-check, lint, 
 
 Bring project docs in line with the work:
 
-- If the project keeps a plan or roadmap doc, does this work complete any unchecked `- [ ]` items? If yes, update them to `- [x]` with the issue or ticket reference.
+- If there is a plan doc (the config's `Plan`, or if the config has no `Plan` field, one under `docs/`), does this work complete any unchecked `- [ ]` items? If yes, update them to `- [x]` with the issue or ticket reference.
 - Does the issue or ticket have complete AC?
 - Did this change make anything in the README, `AGENTS.md`, or other docs out of date?
 - Note any new issues surfaced that should be filed.
+- Carry out any `Ship extras` the config lists.
 
 Make any doc updates now, before the commit, so they go in the same PR.
 
@@ -138,8 +149,8 @@ Leave out "Decisions worth reviewing" when there were no real decisions (a typo 
 
 End with the link to the work item:
 - **GitHub issue:** `Closes #<number>`, so merging closes the issue.
-- **Jira ticket:** `Jira: <KEY>`, and put the key in the PR title too, following the project's
-  title convention if its instructions set one, otherwise as a prefix: `PROJ-123 feat(scope): ...`.
+- **Jira ticket:** `Jira: <KEY>`, and put the key in the PR title too, following the config's
+  `PR titles` or the project's own convention if either sets one, otherwise as a prefix: `PROJ-123 feat(scope): ...`.
   Merging does not close a Jira ticket. Tell the user it will need moving unless their Jira
   automation does it.
 

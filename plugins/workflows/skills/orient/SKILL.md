@@ -7,6 +7,15 @@ Give a concise "where things stand" briefing. The goal is to answer: what's in f
 
 ## 0. Context
 
+Read the project config, which the `setup-project` playbook writes:
+
+```bash
+f="$HOME/.config/agent-workflows/$(git remote get-url origin | sed -E 's#\.git$##; s#^.*[:/]([^/]+/[^/]+)$#\1#').md"; cat "$f" 2>/dev/null || echo "(no config)"
+```
+
+Its `Tracker` and `Plan` fields override the detection below. If there is no config, mention
+once in the briefing that running `setup-project` would make this more accurate.
+
 Find the default branch, rather than assuming `main`, and use it wherever `<default>` appears
 below:
 
@@ -17,7 +26,8 @@ git symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null \
 
 Drop any `origin/` prefix from the result. If both fail, use `main`.
 
-Work out the tracker. If the project's `AGENTS.md` or `CLAUDE.md` names one, use it. Otherwise
+Work out the tracker. Use the config's `Tracker` if it has one. Otherwise, if the project's
+`AGENTS.md` or `CLAUDE.md` names one, use it. Otherwise
 look at recent branch names: keys like `PROJ-123` mean Jira, trailing numbers mean GitHub issues.
 If neither tells you, assume GitHub issues and say so in the briefing.
 
@@ -62,7 +72,7 @@ Order by milestone, then by any priority labels the project uses. If issues are 
 
 **Jira:** list the user's open tickets in the current sprint, using whatever Jira access is available (an Atlassian MCP connector, `acli`, or the `jira` CLI). If there is none, say so and skip this step rather than guessing.
 
-If the project keeps a plan or roadmap doc (for example under `docs/`), use it to decide what is current: find the section being worked through and list the open issues for it first.
+If the config names a `Plan` doc, use it to decide what is current; if that file no longer exists, say so, suggest re-running `setup-project`, and skip this rather than searching for another. `Plan: none` means skip this. If the config has no `Plan` field, look for a plan or roadmap doc under `docs/`. With a plan doc: find the section being worked through and list the open issues for it first.
 
 For each item you list, note whether it has a linked PR or is unstarted.
 

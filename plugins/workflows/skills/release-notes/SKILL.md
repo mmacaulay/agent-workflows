@@ -58,7 +58,11 @@ Commit subjects are the thinnest source. Prefer, in this order:
      --json number,title,labels
    ```
    If the project tracks work in Jira, use the tickets referenced by the merged PRs instead,
-   fetched with whatever Jira access is available. Without Jira access, rely on the PRs.
+   with the project key from the config's `Tracker` when there is one:
+   ```bash
+   f="$HOME/.config/agent-workflows/$(git remote get-url origin | sed -E 's#\.git$##; s#^.*[:/]([^/]+/[^/]+)$#\1#').md"; cat "$f" 2>/dev/null || echo "(no config)"
+   ```
+   Fetch them with whatever Jira access is available. Without Jira access, rely on the PRs.
 3. **Commits**, to catch anything that landed without a PR.
    ```bash
    git log --oneline "$BASE"..origin/<default> --no-merges

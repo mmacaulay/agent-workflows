@@ -14,6 +14,7 @@ builds on `workflows`: its playbooks call `check` and `release-notes`.
 
 | Playbook | Use it when |
 | --- | --- |
+| [`setup-project`](plugins/workflows/skills/setup-project/SKILL.md) | Setting up a project for the others. Records its tracker, plan doc, and any non-default checks in a personal config file. |
 | [`orient`](plugins/workflows/skills/orient/SKILL.md) | Starting a session, or picking up after a break. Your PRs and reviews, backlog, in-flight branches. |
 | [`start-work`](plugins/workflows/skills/start-work/SKILL.md) | Beginning a tracked work item. Fetches the issue or ticket, gathers context, proposes an approach, creates the branch. |
 | [`check`](plugins/workflows/skills/check/SKILL.md) | Verifying the project type-checks, lints, and tests cleanly, in Node, Python, or Rails. |
@@ -35,10 +36,18 @@ builds on `workflows`: its playbooks call `check` and `release-notes`.
   such as an Atlassian MCP connector or a Jira CLI, or the playbooks ask you to paste them
 - For the `expo` playbooks, an Expo project with `app.json`
 
-No absolute paths, no machine-specific configuration. Where a project has its own conventions
-(check commands, tracker, branch names), the project's `AGENTS.md` or `CLAUDE.md` wins over the
-playbook's defaults. Where a playbook wants a project document such as a roadmap, it checks
-whether one exists first and skips that step when it does not.
+No absolute paths, no machine-specific configuration in the playbooks themselves. Where a
+project has its own conventions (tracker, plan doc, check commands, branch names), the playbooks
+look in this order:
+
+1. A personal per-repository config at `~/.config/agent-workflows/<owner>/<repo>.md`, written by
+   `setup-project`. It lives outside the repository, so it is never committed, it works in every
+   worktree, and it never touches a shared `AGENTS.md`.
+2. The project's own `AGENTS.md` or `CLAUDE.md`.
+3. The playbook's own detection and defaults.
+
+Where a playbook wants a project document such as a roadmap, it checks whether one exists first
+and skips that step when it does not.
 
 ## Using these outside Claude Code
 

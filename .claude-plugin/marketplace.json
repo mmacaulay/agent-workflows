@@ -7,7 +7,7 @@
   "plugins": [
     {
       "name": "workflows",
-      "description": "General development workflows: orient, start work, run checks, ship a PR, and write release notes.",
+      "description": "General development workflows: set up a project, orient, start work, run checks, ship a PR, and write release notes.",
       "source": "./plugins/workflows",
       "category": "workflow"
     },
