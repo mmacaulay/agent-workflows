@@ -1,6 +1,6 @@
 ---
 name: ship
-description: Complete the shipping workflow for a finished feature - run checks, sync docs, write a conventional commit, push, and open a well-formed PR with acceptance criteria and a link to its GitHub issue or Jira ticket. Use when implementation is done and ready to ship. Invoke as /ship, or /ship #187 or /ship PROJ-123 if the work item isn't obvious from the branch name.
+description: Complete the shipping workflow for a finished feature - run checks, prove the change works, rate its risk, review the diff with fresh context, sync docs, write a conventional commit, push, and open a well-formed PR with acceptance criteria, risk, revert notes, and a link to its GitHub issue or Jira ticket. Use when implementation is done and ready to ship. Invoke as /ship, or /ship #187 or /ship PROJ-123 if the work item isn't obvious from the branch name.
 ---
 
 Run this when implementation is complete. Covers everything from "done coding" to "PR open."
@@ -63,7 +63,66 @@ Follow the `check` playbook. It works out what this project's type-check, lint, 
 
 **If checks fail, stop here.** Report the failures and fix them before proceeding - do not open a PR with a broken build.
 
-## 4. Sync docs
+## 4. Prove it works
+
+Passing checks show nothing broke. They don't show the change does what the work item asks.
+Produce evidence that it does, and show it rather than asserting it:
+
+- A test that exercises the new behaviour, and its output
+- A command run against the real thing (a script, an API request to a dev server), and its output
+- For UI, a screenshot or simulator capture of the changed screen
+
+If `start-work` recorded how this would be proven, do that. Keep the evidence; it goes in the PR
+under "How it was tested".
+
+If something can't be verified here (it needs production data, a device, or credentials you
+don't have), say so plainly. The PR will list it as unverified rather than implying it was
+checked.
+
+## 5. Assess risk
+
+Rate the change by what it touches, not by how big it is:
+
+- **High:** authentication or permissions, payments or billing, data migrations or anything that
+  deletes data, CI or release workflows, installers and auto-updaters, production config or
+  secrets
+- **Medium:** behaviour changes in shared code, public APIs, dependency upgrades
+- **Low:** docs, copy, tests, isolated UI, internal refactors with test coverage
+
+Then work out how to revert it. Usually that is reverting the merge commit. Note anything that
+makes it harder: a migration that needs a reverse step, data that can't be restored, a mobile
+build already in users' hands, a feature flag that can switch it off instead.
+
+## 6. Review the diff with fresh eyes
+
+Have the full branch diff reviewed by a reviewer that hasn't seen this session, so it reads the
+code rather than remembering intent:
+
+```bash
+git diff $(git merge-base <default> HEAD)
+```
+
+- **In Claude Code:** run the `code-review` skill at `low` for a low-risk change, `medium` for
+  medium, and `high` for high. For a change touching authentication, user input, or secrets, also
+  run `security-review`.
+- **Elsewhere:** give a separate agent session, or a subagent, only the diff, the acceptance
+  criteria, and the rules below.
+
+Rules for the reviewer and for acting on what it finds:
+
+- Every finding cites a file and line. Treat one without a location as a guess.
+- Issues the branch didn't introduce are marked **pre-existing**. Don't fix them here; they become
+  follow-ups in the report.
+- Fix the whole class of a confirmed bug, not just the line that was flagged.
+- For a finding you reject, note why. It goes in the PR so a human reviewer doesn't raise it again.
+- After fixing, re-run `check`, then re-review **only the new changes**. Don't re-raise findings
+  that were fixed or rejected.
+- **Stop after three rounds.** If the reviewer is still finding real problems, the approach is
+  probably wrong. Stop and discuss it with the user rather than starting a fourth round.
+
+For a high-risk change, the automated review doesn't replace a human. The PR says so (step 10).
+
+## 7. Sync docs
 
 Bring project docs in line with the work:
 
@@ -75,7 +134,7 @@ Bring project docs in line with the work:
 
 Make any doc updates now, before the commit, so they go in the same PR.
 
-## 5. Stage and commit
+## 8. Stage and commit
 
 Review what should be staged:
 ```bash
@@ -101,13 +160,13 @@ Follows the system appearance by default. The toggle overrides it, and
 the choice persists across launches.
 ```
 
-## 6. Push
+## 9. Push
 
 ```bash
 git push -u origin <branch-name>
 ```
 
-## 7. Open the PR
+## 10. Open the PR
 
 Write the description for a reviewer who wasn't in the session. Anything that was only explained in chat needs explaining here, or leaving out.
 
@@ -134,7 +193,15 @@ Writing rules:
 
 ## How it was tested
 - **Automated:** <commands run, and what the tests cover>
-- **Manual or real data:** <what was run, what happened, and what that shows>
+- **Proof:** <the evidence from step 4: what was run, what happened, and what that shows>
+- **Unverified:** <anything that couldn't be checked, and why. Omit if none.>
+- **Review:** <rounds run, what was fixed, and any finding rejected with the reason>
+
+## Risk
+<Low, Medium, or High, and what puts it there. For High: "Needs human review:" and the specific part a person should read.>
+
+## How to revert
+<Usually "Revert the merge commit." Add anything that makes it harder: a migration's reverse step, data that can't be restored, a shipped mobile build.>
 
 ## Screenshots
 <If UI changed: attach screenshots or simulator captures. Omit this section otherwise.>
@@ -162,8 +229,10 @@ gh pr create --title "<commit subject>" --body-file - <<'EOF'
 EOF
 ```
 
-## 8. Report
+## 11. Report
 
-Print the PR URL and a one-line summary of what shipped.
+Print the PR URL, a one-line summary of what shipped, and its risk rating. For a high-risk change,
+remind the user it needs a human review before merging.
 
-If any new issues were identified while syncing docs (step 4), list them and ask if the user wants to file them now.
+If any new issues were identified while syncing docs (step 7), or the review found pre-existing
+problems (step 6), list them and ask if the user wants to file them now.

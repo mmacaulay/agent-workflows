@@ -82,7 +82,9 @@ Based on steps 1-3, write a brief implementation plan:
 - What needs to be built (in order)
 - Which files will be created or modified
 - Any key decisions or trade-offs to flag before starting
-- Rough test strategy (what to verify)
+- How we'll prove it works: the specific evidence that will show the acceptance criteria are met,
+  such as a test, a command and its expected output, or a screenshot of a screen. `ship` checks
+  for this evidence before opening the PR.
 
 **Stop here and wait for the user to confirm the approach** before proceeding to step 5. If the plan needs adjusting, iterate before touching any code.
 

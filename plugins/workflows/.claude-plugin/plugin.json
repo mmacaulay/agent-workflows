@@ -1,7 +1,7 @@
 {
   "name": "workflows",
   "description": "General development workflows: set up a project, orient, start work, run checks, ship a PR, and write release notes. Works with GitHub issues or Jira. Written as plain Markdown playbooks so non-Claude agents can read them too.",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "author": {
     "name": "Matt MacAulay"
   }

@@ -18,7 +18,7 @@ builds on `workflows`: its playbooks call `check` and `release-notes`.
 | [`orient`](plugins/workflows/skills/orient/SKILL.md) | Starting a session, or picking up after a break. Your PRs and reviews, backlog, in-flight branches. |
 | [`start-work`](plugins/workflows/skills/start-work/SKILL.md) | Beginning a tracked work item. Fetches the issue or ticket, gathers context, proposes an approach, creates the branch. |
 | [`check`](plugins/workflows/skills/check/SKILL.md) | Verifying the project type-checks, lints, and tests cleanly, in Node, Python, or Rails. |
-| [`ship`](plugins/workflows/skills/ship/SKILL.md) | Implementation is done. Runs checks, writes the commit, opens a PR with acceptance criteria. |
+| [`ship`](plugins/workflows/skills/ship/SKILL.md) | Implementation is done. Runs checks, proves the change works, rates its risk, reviews the diff with fresh context, then commits and opens a PR. |
 | [`release-notes`](plugins/workflows/skills/release-notes/SKILL.md) | Turning merged work into a CHANGELOG entry, plus App Store "What's New" copy for apps. |
 
 ### expo
